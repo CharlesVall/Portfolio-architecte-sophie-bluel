@@ -1,48 +1,17 @@
-const apiUrl = `http://localhost:5678/api/`
+import { displayGallery, displayFilter, displayGalleryAccordingToFilter } from "./display.js";
+import { getWorks } from "./crud.js";
 
-async function getWorks() {
-    const gallery = document.querySelector(".gallery");
-    const response = await fetch(apiUrl + "works");
+async function init() {
+    try {
+        const works = await getWorks();
+        displayGallery(works);
+        await displayFilter();
 
-    gallery.innerHTML = ""
-
-    if (!response.ok) {
-        throw new Error(`Une erreur est survenue: ${response.status}`);
+        displayGalleryAccordingToFilter(works)
+    } catch (error) {
+        console.error("Erreur lors de l'initialisation :", error.message);
     }
-
-    const workList = await response.json();
-    console.log(workList);
-
-    workList.forEach(work => { createWorkFigure(work, gallery) });
 }
 
-function createWorkFigure(work, gallery){
-    const workFigure = document.createElement("figure");
-    const workImg = Object.assign(document.createElement("img"), {src: work.imageUrl, alt: work.title})
-    const figCaption = Object.assign(document.createElement("figcaption"), {innerText: work.title})
 
-    workFigure.append(workImg, figCaption);
-    gallery.appendChild(workFigure);
-};
-
-function createWorkFigureFunctional(work, gallery) {
-    gallery.append(
-        Object.assign(document.createElement("figure", {
-            append: function () {
-                this.append(
-                    Object.assign(document.createElement("img"), {
-                        src: work.imageUrl,
-                        alt: work.title
-                    }),
-                    Object.assign(document.createElement("figcaption"), {
-                        title: work.title
-                    })
-                );
-                return this
-            } ()
-            }
-        ))
-    );
-};
-
-getWorks()
+init();

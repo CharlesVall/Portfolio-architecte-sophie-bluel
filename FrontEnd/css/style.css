@@ -1,3 +1,11 @@
+/********** General ***********/
+:root {
+	--main-color: #B1663C;
+	--second-color: #1D6154;
+
+}
+
+
 body {
 	max-width: 1140px;
 	margin:auto;
@@ -19,7 +27,7 @@ h1{
 	font-family: 'Syne';
 	font-size: 22px;
 	font-weight: 800;
-	color: #B1663C
+	color: var(--main-color)
 }
 
 h1 > span {
@@ -33,7 +41,7 @@ h2{
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
-	color: #1D6154
+	color: var(--second-color)
 }
 nav ul {
 	display: flex;
@@ -47,14 +55,14 @@ nav li {
 }
 
 li:hover {
-	color: #B1663C;
+	color: var(--main-color);
 }
 #introduction {
 	display: flex;
 	align-items: center;
 }
 #introduction figure {
-	flex: 1
+	flex: 1;
 }
 #introduction img {
 	display: block;
@@ -76,6 +84,9 @@ li:hover {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
+/******* gallery ******/
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -86,11 +97,48 @@ li:hover {
 
 .gallery img {
 	width: 100%;
-
 }
+
+
+/***** filters ******/
+.filters-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.8rem;
+	height: auto;
+	margin-bottom: 20px;
+}
+
+.filters-container label {
+	display: flex;
+	cursor: pointer;
+	font-family: 'Syne';
+	color: var(--second-color);
+	border: solid 1px var(--second-color);
+	border-radius: 3.7rem;
+	font-size: 1rem;
+	align-items: center;
+	padding: 1.1rem 1.375rem;
+	height: 2rem;
+	box-sizing: border-box;
+}
+
+.filters-container input:checked + label, .filters-container label:hover {
+	color: white;
+	background-color: #1D6154;
+	transition: 0.2s ease-in-out;
+}
+
+.filters-container input {
+	display: none;
+}
+
+
+/******* contact ******/
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
@@ -124,12 +172,14 @@ input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
-	background-color: #1D6154;
+	background-color: var(--second-color);
 	margin : 2em auto ;
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
 }
+
+/****** footer *****/
 
 footer nav ul {
 	display: flex;
