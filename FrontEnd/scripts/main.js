@@ -1,4 +1,4 @@
-import { displayGallery, displayFilter, displayGalleryAccordingToFilter } from "./display.js";
+import { displayGallery, displayFilter, displayGalleryAccordingToFilter, displayPageWhileConnected } from "./display.js";
 import { getWorks } from "./crud.js";
 
 async function init() {
@@ -8,8 +8,9 @@ async function init() {
         await displayFilter();
 
         displayGalleryAccordingToFilter(works)
+        displayPageWhileConnected()
     } catch (error) {
-        console.error("Erreur lors de l'initialisation :", error.message);
+        console.error("Error while initializing:", error.message);
     }
 }
 

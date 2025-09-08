@@ -46,4 +46,13 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+input[type="submit"] {
+	border: 0;
+}
 /** end reset css**/

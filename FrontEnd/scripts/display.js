@@ -63,3 +63,43 @@ export function displayGalleryAccordingToFilter(workList){
             })
         })
 };
+
+export function displayPageWhileConnected() {
+    const logout = () => { localStorage.removeItem("token") }
+    const loginLink = document.querySelector(`nav a[href="./login.html"]`)
+
+    if (!localStorage.getItem("token")) {
+        loginLink.innerHTML = `<a href="./login.html">login</a>` ;   
+        return;
+    }
+    
+    loginLink.innerHTML = `<a href="">logout</a>` ;   
+    loginLink.addEventListener("click", () => { logout() })
+    
+}
+
+export function displayModalGallery(workList){
+    const modalGallery = document.querySelector(".modal-gallery");
+
+    try {
+        if (workList.length === 0) {
+            modalGallery.innerHTML = "<p>Aucun projet à afficher.</p>";
+            return;
+        }
+
+        modalGallery.innerHTML = ""
+        workList.forEach(work => { createWorkFigure(work, gallery) });
+
+    } catch (error) {
+        console.log(`Une erreur est survenue : ${error.message}`)
+        gallery.innerHTML = `<p>Impossible de charger la galerie. Veuillez réessayer plus tard.</p>`;
+    }
+}
+
+function createModalWorkFigure(work, modalGallery){
+    const modalWorkFigure = document.createElement("figure");
+    const workImg = Object.assign(document.createElement("img"), {src: work.imageUrl, alt: work.title})
+
+    modalWorkFigure.append(workImg);
+    modalGallery.appendChild(workFigure);
+}
