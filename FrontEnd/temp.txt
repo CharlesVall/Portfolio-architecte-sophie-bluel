@@ -1,0 +1,9 @@
+		<div class="modal-wrapper">
+			<div class="modal-header">
+				<button class="modal-close-button"><img src="./assets/icons/cross.svg"></button>
+			</div>
+			<h3 class="modal-title">Galerie photo</h2>
+			<div class="modal-gallery"></div>
+			<div class="modal-split"></div>
+			<button class="modal-button">Ajouter une photo</button>
+		</div>

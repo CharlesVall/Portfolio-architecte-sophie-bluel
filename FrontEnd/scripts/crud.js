@@ -16,10 +16,9 @@ export async function getCategories() {
 
     if (!response.ok) throw new Error(`Error: ${response.status}`);
 
-    const data = await response.json();
-    const categoriesList = data.map(categorie => categorie.name);
+    const categoriesList = await response.json();
     
-    return categoriesList;
+    return categoriesList
 }
 
 export async function deleteWorkById(workId) {
@@ -35,3 +34,18 @@ export async function deleteWorkById(workId) {
     if (!response.ok) throw new Error(`Error: ${response.status}`);
     return response;
 }
+
+export async function createWork(formData) {
+    const token = localStorage.getItem("token")
+    const response = await fetch(`${apiUrl}/works`, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${token}`
+        },
+        body: formData
+    })
+
+    if (!response.ok) throw new Error(`Error: ${response.status}`);
+    return response;
+}
+

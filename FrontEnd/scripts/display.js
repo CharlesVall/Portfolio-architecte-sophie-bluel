@@ -29,7 +29,8 @@ function createWorkFigure(work, gallery){
 
 
 export async function displayFilter(){
-    const filterList = ["Tous", ...(await crud.getCategories())];
+    const categoriesList = await crud.getCategories()
+    const filterList = ["Tous", ...(categoriesList.map(category => category.name))];
     const filterContainer = document.querySelector(".filters-container")
 
     filterList.forEach((filter, index) => {
@@ -76,7 +77,7 @@ export function displayPageWhileConnected() {
     }
     
     loginLink.innerHTML = `<a href="">logout</a>` ;   
-    loginLink.addEventListener("click", () => { logout() })
+    loginLink.addEventListener("click", logout)
 
     editionContainer.style.display = "flex";
     

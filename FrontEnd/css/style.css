@@ -68,15 +68,35 @@ li:hover {
 	color: var(--main-color);
 }
 
-input[type="submit"]{
+input[type="submit"] {
+	cursor: pointer;
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
 	background-color: var(--second-color);
-	margin : 2em auto ;
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+}
+
+input:not([type="file"],[type="submit"]), select, option {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    filter: drop-shadow(0 0.2rem 0.3rem rgba(0, 0, 0, 0.1));
+    transition: box-shadow 0.2s ease;
+}
+
+select {
+	background-color: white;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #007BFF22;
 }
 
 /****** footer *****/

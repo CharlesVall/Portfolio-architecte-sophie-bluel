@@ -1,3 +1,5 @@
+import { initTokenWithExpiration } from "./token.js";
+
 // sophie.bluel@test.tld | S0phie
 const apiUrl = `http://127.0.0.1:5678/api`;
 const loginForm = document.querySelector('.login-form');
@@ -30,7 +32,7 @@ export async function handleLogin() {
         const data = await response.json();
         console.log(`Reponse: ${data}`);
 
-        localStorage.setItem("token", data.token)
+        initTokenWithExpiration(data.token)
         window.location.replace('/')
 
     } catch (error) {
