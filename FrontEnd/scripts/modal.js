@@ -52,14 +52,14 @@ export function displayModalGallery(workList){
 	}
 }
 
-function createModalWorkFigure(work, modalGallery){
+async function createModalWorkFigure(work, modalGallery){
 	const modalWorkFigure = document.createElement("figure");
 	const workImg = Object.assign(document.createElement("img"), {src: work.imageUrl, alt: work.title})
 	const deleteButton = Object.assign(document.createElement("button"), {className: "delete-button"})
 	const trashIcon = Object.assign(document.createElement("img"), {src: "./assets/icons/trash.svg", alt: "bouton suppression"})
 		
-	deleteButton.addEventListener("click", () => {
-		crud.deleteWorkById(work.id)
+	deleteButton.addEventListener("click", async () => {
+		await crud.deleteWorkById(work.id)
 		refreshModalGallery()
 	})
 
@@ -80,7 +80,7 @@ async function refreshModalGallery() {
 		}
 
 		modalGallery.innerHTML = ""
-		workList.forEach(work => { createModalWorkFigure(work, modalGallery) });
+		await workList.forEach(work => { createModalWorkFigure(work, modalGallery) });
 
 	} catch (error) {
 		console.log(`Error : ${error.message}`)
@@ -126,22 +126,23 @@ function injectingImagePreviewOnFileInput(){
 
 function onSendingWorkForm(){
 	const form = document.querySelector(`.modal-form`)
-	const fileInput = form.querySelector(`input[type="file"]`)
-	const textInput = form.querySelector(`input[type="text"]`)
-	const categoriesSelect = form.querySelector(`select`)
-
 
 	form.addEventListener(`submit`, (event) => {
 		event.preventDefault()
+		const fileInput = form.querySelector(`input[type="file"]`)
+		const textInput = form.querySelector(`input[type="text"]`)
+		const categoriesSelect = form.querySelector(`select`)
+
 		const formData = new FormData();
   	formData.append("image", fileInput.files[0]);
   	formData.append("title", textInput.value);
   	formData.append("category",parseInt(categoriesSelect.value.charAt(0)));
+		console.log(fileInput.files[0])
 		crud.createWork(formData)
 	})
 }
 
-function addFormButtonReactivity() {
+async function addFormButtonReactivity() {
 	const form = document.querySelector(`.modal-form`)
 	const submitBtn = form.querySelector('input[type="submit"]');
 	const returnButton = document.querySelector(`.modal-return-button`)
@@ -154,9 +155,9 @@ function addFormButtonReactivity() {
 	  }
 	});
 
-	submitBtn.addEventListener("click", () => {
+	submitBtn.addEventListener("click", async () => {
+		await refreshModalGallery()
 		returnButton.click()
-		refreshModalGallery()
 	})
 }
 
