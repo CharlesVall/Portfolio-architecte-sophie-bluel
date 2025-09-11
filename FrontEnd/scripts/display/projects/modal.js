@@ -1,4 +1,6 @@
-import * as crud from "./crud.js";
+import * as crud from "../../tools/crud.js";
+import { renderGalleryContent } from "../../tools/renderGallery.js";
+import { handleFilterChange, refreshGallery } from "./projects.js";
 
 export function displayEditionModal() {
 	const editionBanner = document.querySelector(".edition-banner");
@@ -16,6 +18,17 @@ export function displayEditionModal() {
 	initModalReactivity();
 }
 
+export function displayModalGallery(workList){
+	const modalGallery = document.querySelector(".modal-gallery");
+		
+	try {
+		renderGalleryContent(modalGallery, workList, createModalWorkFigure)
+				
+	} catch (error) {
+		console.log(`Error : ${error.message}`);
+		modalGallery.innerHTML = "<p>Impossible de charger la galerie. Veuillez réessayer plus tard.</p>";
+	}
+}
 
 function addingButtonModalStateReactivity() {
 	const modalDeleteWrapper = document.querySelector(".modal-state-1");
@@ -34,25 +47,8 @@ function addingButtonModalStateReactivity() {
 	});
 }
 
-export function displayModalGallery(workList){
-	const modalGallery = document.querySelector(".modal-gallery");
-		
-	try {
-		if (workList.length === 0) {
-			modalGallery.innerHTML = "<p>Aucun projet à afficher.</p>";
-			return;
-		}
-				
-		modalGallery.innerHTML = "";
-		workList.forEach(work => { createModalWorkFigure(work, modalGallery); });
-				
-	} catch (error) {
-		console.log(`Error : ${error.message}`);
-		modalGallery.innerHTML = "<p>Impossible de charger la galerie. Veuillez réessayer plus tard.</p>";
-	}
-}
 
-async function createModalWorkFigure(work, modalGallery){
+async function createModalWorkFigure(modalGallery, work){
 	const modalWorkFigure = document.createElement("figure");
 	const workImg = Object.assign(document.createElement("img"), {src: work.imageUrl, alt: work.title});
 	const deleteButton = Object.assign(document.createElement("button"), {className: "delete-button"});
@@ -60,7 +56,8 @@ async function createModalWorkFigure(work, modalGallery){
 		
 	deleteButton.addEventListener("click", async () => {
 		await crud.deleteWorkById(work.id);
-		refreshModalGallery();
+		await refreshModalGallery();
+		await refreshGallery();
 	});
 
 	deleteButton.append(trashIcon);
@@ -74,15 +71,7 @@ async function refreshModalGallery() {
 
 	try {
 		const workList = await crud.getWorks();
-		if (workList.length === 0) {
-			modalGallery.innerHTML = "<p>Plus aucun projet à afficher.</p>";
-			return;
-		}
-
-		modalGallery.innerHTML = "";
-		for (const work of workList) {
-      await createModalWorkFigure(work, modalGallery);
-    }
+		renderGalleryContent(modalGallery, workList, createModalWorkFigure)
 
 	} catch (error) {
 		console.log(`Error : ${error.message}`);
@@ -128,14 +117,14 @@ function injectingImagePreviewOnFileInput(){
 
 function addingWorkFormReactivity(){
 	const form = document.querySelector(".modal-form");
-	const submitBtn = form.querySelector("input[type='submit']");
+	const submitButton = form.querySelector("input[type='submit']");
 	const returnButton = document.querySelector(".modal-return-button");
 
 	form.addEventListener("input", () => {
 	  if (form.checkValidity()) {
-	    submitBtn.disabled = false;
+	    submitButton.disabled = false;
 	  } else {
-	    submitBtn.disabled = true;
+	    submitButton.disabled = true;
 	  }
 	});
 
@@ -151,7 +140,10 @@ function addingWorkFormReactivity(){
   	formData.append("category",parseInt(categoriesSelect.value.split("-")));
 		
 		await crud.createWork(formData);
+		const workList = await crud.getWorks();
 		await refreshModalGallery();
+		await refreshGallery();
+		handleFilterChange(workList)
 		returnButton.click();
 	});
 }

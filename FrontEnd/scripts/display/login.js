@@ -1,6 +1,5 @@
-import { initTokenWithExpiration } from "./token.js";
+import { initTokenWithExpiration } from "../tools/token.js";
 
-// sophie.bluel@test.tld | S0phie
 const apiUrl = "http://127.0.0.1:5678/api";
 const loginForm = document.querySelector(".login-form");
 const errorMessage = document.querySelector(".error-message");

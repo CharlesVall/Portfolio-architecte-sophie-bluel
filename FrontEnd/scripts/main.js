@@ -1,19 +1,22 @@
-import { displayGallery, displayFilter, displayGalleryAccordingToFilter, displayPageWhileConnected } from "./display.js";
-import { displayModalGallery, displayEditionModal } from "./modal.js";
-import { getWorks } from "./crud.js";
-import { checkTokenExpiry } from "./token.js";
+import { displayGallery, displayFilter, handleFilterChange, displayPageWhileConnected } from "./display/projects/projects.js";
+import { displayModalGallery, displayEditionModal } from "./display/projects/modal.js";
+import * as crud from "./tools/crud.js";
+import { checkTokenExpiry } from "./tools/token.js";
 
 async function init() {
 	try {
-    checkTokenExpiry();
-    const works = await getWorks();
-    displayGallery(works);
-    await displayFilter();
+    const works = await crud.getWorks();
+    const categories = await crud.getCategories();
 
-    displayGalleryAccordingToFilter(works);
+    checkTokenExpiry();
     displayPageWhileConnected();
-    displayModalGallery(works);
+
+    displayGallery(works);
+    displayFilter(categories);
+    handleFilterChange(works);
+
     displayEditionModal();
+    displayModalGallery(works);
   } catch (error) {
     console.error("Error while initializing:", error.message);
   }
