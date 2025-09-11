@@ -1,37 +1,37 @@
-import * as crud from "./crud.js"
+import * as crud from "./crud.js";
 
 export function displayEditionModal() {
-	const editionBanner = document.querySelector(`.edition-banner`)
-	const closeModalButton = document.querySelectorAll(`.modal-close-button`)
-	const editionModal = document.querySelector(`.edition-modal`)
+	const editionBanner = document.querySelector(".edition-banner");
+	const closeModalButton = document.querySelectorAll(".modal-close-button");
+	const editionModal = document.querySelector(".edition-modal");
 
 	editionBanner.addEventListener("click", () => {
-		editionModal.style.display = "flex"
-	})
+		editionModal.style.display = "flex";
+	});
 
 	closeModalButton.forEach(button => button.addEventListener("click", () => {
-		editionModal.style.display = "none"
-	}))
+		editionModal.style.display = "none";
+	}));
 
-	initModalReactivity()
+	initModalReactivity();
 }
 
 
 function addingButtonModalStateReactivity() {
-	const modalDeleteWrapper = document.querySelector(`.modal-state-1`)
-	const modalAddWrapper  = document.querySelector(`.modal-state-2`)
-	const modalReturnButton = document.querySelector(`.modal-return-button`)
-	const modalAddButton = document.querySelector(`.add-button`)
+	const modalDeleteWrapper = document.querySelector(".modal-state-1");
+	const modalAddWrapper  = document.querySelector(".modal-state-2");
+	const modalReturnButton = document.querySelector(".modal-return-button");
+	const modalAddButton = document.querySelector(".add-button");
 
 	modalReturnButton.addEventListener("click", () => {
-		modalDeleteWrapper.style.display = "flex"
-		modalAddWrapper.style.display = "none"
-	})
+		modalDeleteWrapper.style.display = "flex";
+		modalAddWrapper.style.display = "none";
+	});
 
 	modalAddButton.addEventListener("click", () => {
-		modalDeleteWrapper.style.display = "none"
-		modalAddWrapper.style.display = "flex"
-	})
+		modalDeleteWrapper.style.display = "none";
+		modalAddWrapper.style.display = "flex";
+	});
 }
 
 export function displayModalGallery(workList){
@@ -43,27 +43,27 @@ export function displayModalGallery(workList){
 			return;
 		}
 				
-		modalGallery.innerHTML = ""
-		workList.forEach(work => { createModalWorkFigure(work, modalGallery) });
+		modalGallery.innerHTML = "";
+		workList.forEach(work => { createModalWorkFigure(work, modalGallery); });
 				
 	} catch (error) {
-		console.log(`Error : ${error.message}`)
-		modalGallery.innerHTML = `<p>Impossible de charger la galerie. Veuillez réessayer plus tard.</p>`;
+		console.log(`Error : ${error.message}`);
+		modalGallery.innerHTML = "<p>Impossible de charger la galerie. Veuillez réessayer plus tard.</p>";
 	}
 }
 
 async function createModalWorkFigure(work, modalGallery){
 	const modalWorkFigure = document.createElement("figure");
-	const workImg = Object.assign(document.createElement("img"), {src: work.imageUrl, alt: work.title})
-	const deleteButton = Object.assign(document.createElement("button"), {className: "delete-button"})
-	const trashIcon = Object.assign(document.createElement("img"), {src: "./assets/icons/trash.svg", alt: "bouton suppression"})
+	const workImg = Object.assign(document.createElement("img"), {src: work.imageUrl, alt: work.title});
+	const deleteButton = Object.assign(document.createElement("button"), {className: "delete-button"});
+	const trashIcon = Object.assign(document.createElement("img"), {src: "./assets/icons/trash.svg", alt: "bouton suppression"});
 		
 	deleteButton.addEventListener("click", async () => {
-		await crud.deleteWorkById(work.id)
-		refreshModalGallery()
-	})
+		await crud.deleteWorkById(work.id);
+		refreshModalGallery();
+	});
 
-	deleteButton.append(trashIcon)
+	deleteButton.append(trashIcon);
 	modalWorkFigure.append(workImg, deleteButton);
 	modalGallery.append(modalWorkFigure);
 }
@@ -79,73 +79,57 @@ async function refreshModalGallery() {
 			return;
 		}
 
-		modalGallery.innerHTML = ""
-		await workList.forEach(work => { createModalWorkFigure(work, modalGallery) });
+		modalGallery.innerHTML = "";
+		for (const work of workList) {
+      await createModalWorkFigure(work, modalGallery);
+    }
 
 	} catch (error) {
-		console.log(`Error : ${error.message}`)
-		modalGallery.innerHTML = `<p>Impossible de charger la galerie. Veuillez réessayer plus tard.</p>`;
+		console.log(`Error : ${error.message}`);
+		modalGallery.innerHTML = "<p>Impossible de charger la galerie. Veuillez réessayer plus tard.</p>";
 	}
 }
 
 async function fillingCategoryOptionInFormInput() {
-	const selectInput = document.querySelector(`.modal-form select`)
-	const categoryList = await crud.getCategories()
+	const selectInput = document.querySelector(".modal-form select");
+	const categoryList = await crud.getCategories();
 		
 	categoryList.forEach(category => {
-		let categoryOption = Object.assign(document.createElement(`option`), {value: `${category.id}-${category.name}`})
-		categoryOption.innerText = category.name
-		selectInput.append(categoryOption)
-	})
+		let categoryOption = Object.assign(document.createElement("option"), {value: `${category.id}-${category.name}`});
+		categoryOption.innerText = category.name;
+		selectInput.append(categoryOption);
+	});
 }
 
 function linkAddButtonToFileInput() {
-	const fileInput = document.querySelector(`.modal-form input[type="file"]`)
-	const addFileButton = document.querySelector(`.add-file-button`)
+	const fileInput = document.querySelector(".modal-form input[type='file']");
+	const addFileButton = document.querySelector(".add-file-button");
 
-	addFileButton.addEventListener("click", () => fileInput.click())
+	addFileButton.addEventListener("click", () => fileInput.click());
 }
 
 function injectingImagePreviewOnFileInput(){
-	const fileInput = document.querySelector(`.modal-form input[type="file"]`)
-	const imagePreviewContainer = document.querySelector(`.file-input-wrapper`)
+	const fileInput = document.querySelector(".modal-form input[type='file']");
+	const imagePreviewContainer = document.querySelector(".file-input-wrapper");
 
 	fileInput.addEventListener("change", () => {
-		const tempImageUrl = URL.createObjectURL(fileInput.files[0])
-		const imagePreview = Object.assign(document.createElement(`img`), {src: tempImageUrl})
+		const tempImageUrl = URL.createObjectURL(fileInput.files[0]);
+		const imagePreview = Object.assign(document.createElement("img"), {src: tempImageUrl});
 
 
 		imagePreview.addEventListener("click", () => {
-			document.querySelector(`.modal-form input[type="file"]`).click()
-		})
+			document.querySelector(".modal-form input[type='file']").click();
+		});
 
-		imagePreviewContainer.innerHTML = ""
-		imagePreviewContainer.append(imagePreview)
-	})
+		imagePreviewContainer.innerHTML = "";
+		imagePreviewContainer.append(imagePreview);
+	});
 }
 
-function onSendingWorkForm(){
-	const form = document.querySelector(`.modal-form`)
-
-	form.addEventListener(`submit`, (event) => {
-		event.preventDefault()
-		const fileInput = form.querySelector(`input[type="file"]`)
-		const textInput = form.querySelector(`input[type="text"]`)
-		const categoriesSelect = form.querySelector(`select`)
-
-		const formData = new FormData();
-  	formData.append("image", fileInput.files[0]);
-  	formData.append("title", textInput.value);
-  	formData.append("category",parseInt(categoriesSelect.value.charAt(0)));
-		console.log(fileInput.files[0])
-		crud.createWork(formData)
-	})
-}
-
-async function addFormButtonReactivity() {
-	const form = document.querySelector(`.modal-form`)
-	const submitBtn = form.querySelector('input[type="submit"]');
-	const returnButton = document.querySelector(`.modal-return-button`)
+function addingWorkFormReactivity(){
+	const form = document.querySelector(".modal-form");
+	const submitBtn = form.querySelector("input[type='submit']");
+	const returnButton = document.querySelector(".modal-return-button");
 
 	form.addEventListener("input", () => {
 	  if (form.checkValidity()) {
@@ -155,17 +139,27 @@ async function addFormButtonReactivity() {
 	  }
 	});
 
-	submitBtn.addEventListener("click", async () => {
-		await refreshModalGallery()
-		returnButton.click()
-	})
+	form.addEventListener("submit", async (event) => {
+		event.preventDefault();
+		const fileInput = form.querySelector("input[type='file']");
+		const textInput = form.querySelector("input[type='text']");
+		const categoriesSelect = form.querySelector("select");
+
+		const formData = new FormData();
+  	formData.append("image", fileInput.files[0]);
+  	formData.append("title", textInput.value);
+  	formData.append("category",parseInt(categoriesSelect.value.split("-")));
+		
+		await crud.createWork(formData);
+		await refreshModalGallery();
+		returnButton.click();
+	});
 }
 
 function initModalReactivity(){
-	addingButtonModalStateReactivity()
-	fillingCategoryOptionInFormInput()
-	linkAddButtonToFileInput()
-	injectingImagePreviewOnFileInput()
-	onSendingWorkForm()
-	addFormButtonReactivity()
+	addingButtonModalStateReactivity();
+	addingWorkFormReactivity();
+	fillingCategoryOptionInFormInput();
+	linkAddButtonToFileInput();
+	injectingImagePreviewOnFileInput();
 }
