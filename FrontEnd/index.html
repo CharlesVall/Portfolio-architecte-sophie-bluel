@@ -81,10 +81,10 @@
 			<form class="modal-form" method="POST" action="" autocomplete="off">
 				<div class="file-input-wrapper">
 					<img class="no-fit" src="./assets/icons/image-holder.svg">
-					<button class="add-file-button">+ Ajouter photo</button>
+					<label class="add-file-button" for="file-input">+ Ajouter photo</label>
 					<p class="file-input-info">jpg, png : 4mo max</p>
 				</div>
-				<input type="file"required>
+				<input type="file" id="file-input" required>
 				<div>
 					<label for="title">Titre</label>
 					<input type="text" id="title" required>
@@ -98,15 +98,14 @@
 				</form>
 		</div>
 	</aside>
-</main>
-
-<footer>
+	</main>
+	<footer>
 	<nav>
 		<ul>
 			<li>Mentions Légales</li>
 		</ul>
 	</nav>
-</footer>
+	</footer>
 <script type="module" src="./scripts/main.js"></script>
 </div>
 </body>

@@ -30,7 +30,7 @@ export function displayModalGallery(workList){
 	}
 }
 
-function addingButtonModalStateReactivity() {
+function addButtonModalStateReactivity() {
 	const modalDeleteWrapper = document.querySelector(".modal-state-1");
 	const modalAddWrapper  = document.querySelector(".modal-state-2");
 	const modalReturnButton = document.querySelector(".modal-return-button");
@@ -90,13 +90,6 @@ async function fillingCategoryOptionInFormInput() {
 	});
 }
 
-function linkAddButtonToFileInput() {
-	const fileInput = document.querySelector(".modal-form input[type='file']");
-	const addFileButton = document.querySelector(".add-file-button");
-
-	addFileButton.addEventListener("click", () => fileInput.click());
-}
-
 function injectingImagePreviewOnFileInput(){
 	const fileInput = document.querySelector(".modal-form input[type='file']");
 	const imagePreviewContainer = document.querySelector(".file-input-wrapper");
@@ -115,7 +108,7 @@ function injectingImagePreviewOnFileInput(){
 	});
 }
 
-function addingWorkFormReactivity(){
+function addWorkFormReactivity(){
 	const form = document.querySelector(".modal-form");
 	const submitButton = form.querySelector("input[type='submit']");
 	const returnButton = document.querySelector(".modal-return-button");
@@ -149,9 +142,8 @@ function addingWorkFormReactivity(){
 }
 
 function initModalReactivity(){
-	addingButtonModalStateReactivity();
-	addingWorkFormReactivity();
+	addButtonModalStateReactivity();
+	addWorkFormReactivity();
 	fillingCategoryOptionInFormInput();
-	linkAddButtonToFileInput();
 	injectingImagePreviewOnFileInput();
 }

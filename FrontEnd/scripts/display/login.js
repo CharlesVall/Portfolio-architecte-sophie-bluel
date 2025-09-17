@@ -9,7 +9,6 @@ loginForm.addEventListener("submit", (event) => {
   handleLogin();
 });
 
-
 export async function handleLogin() {
   const emailInput = document.querySelector("input[type='email']");
   const passwordInput = document.querySelector("input[type='password']");
